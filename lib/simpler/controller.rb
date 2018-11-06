@@ -33,6 +33,7 @@ module Simpler
     end
 
     def write_response
+      return unless @response.body.empty?
       body = render_body
 
       @response.write(body)
@@ -47,7 +48,11 @@ module Simpler
     end
 
     def render(template)
-      @request.env['simpler.template'] = template
+      if template[:plain]
+        plain(template[:plain])
+      else
+        @request.env['simpler.template'] = template
+      end
     end
 
     def status(code)
@@ -56,6 +61,11 @@ module Simpler
 
     def headers
       @response.headers
+    end
+
+    def plain(text)
+      headers['Content-Type'] = 'text/plain'
+      @response.write(text)
     end
   end
 end
