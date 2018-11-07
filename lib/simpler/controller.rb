@@ -2,7 +2,6 @@ require_relative 'view'
 
 module Simpler
   class Controller
-
     attr_reader :name, :request, :response
 
     def initialize(env)
@@ -44,7 +43,7 @@ module Simpler
     end
 
     def params
-      @request.params
+      @request.params.merge!(@request.env['simpler.params'])
     end
 
     def render(template)
