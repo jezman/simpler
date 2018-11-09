@@ -32,7 +32,6 @@ module Simpler
     end
 
     def write_response
-      return unless @response.body.empty?
       body = render_body
 
       @response.write(body)
@@ -43,14 +42,17 @@ module Simpler
     end
 
     def params
-      @request.params.merge!(@request.env['simpler.params'])
+      @request.env['simpler.params'].merge!(@request.params)
     end
 
     def render(template)
-      if template[:plain]
-        plain(template[:plain])
-      else
-        @request.env['simpler.template'] = template
+      @request.env['simpler.template'] = template
+
+      case template.keys.first
+      when :plain
+        headers['Content-Type'] = 'text/plain'
+      when :json
+        headers['Content-Type'] = 'application/json'
       end
     end
 
@@ -60,11 +62,6 @@ module Simpler
 
     def headers
       @response.headers
-    end
-
-    def plain(text)
-      headers['Content-Type'] = 'text/plain'
-      @response.write(text)
     end
   end
 end

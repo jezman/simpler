@@ -1,0 +1,31 @@
+# Logfile created on 2018-11-09 11:04:38 +0300 by logger.rb/61378
+I, [2018-11-09T11:04:45.754330 #9654]  INFO -- : 
+Request: GET http://localhost:9292/tests
+Handler: TestsController#index
+Parameters: {}
+Response: 201 [text/plain] tests/index.html.erb
+
+I, [2018-11-09T11:36:47.242706 #12379]  INFO -- : 
+Request: GET http://localhost:9292/tests/333
+Handler: TestsController#show
+Parameters: {:id=>"333"}
+Response: 200 [application/json] 
+
+I, [2018-11-09T11:39:12.988534 #12508]  INFO -- : 
+Request: GET http://localhost:9292/tests/333
+Handler: TestsController#show
+Parameters: {:id=>"333"}
+Response: 200 [application/json] 
+
+I, [2018-11-09T11:40:22.397747 #12508]  INFO -- : 
+Request: GET http://localhost:9292/tests/333?category=backend
+Handler: TestsController#show
+Parameters: {:id=>"333", "category"=>"backend"}
+Response: 200 [application/json] 
+
+I, [2018-11-09T11:41:37.460170 #12508]  INFO -- : 
+Request: GET http://localhost:9292/333?categoty=backend
+Handler: NilClass#
+Parameters: {}
+Response: 404 [text/plain] 
+

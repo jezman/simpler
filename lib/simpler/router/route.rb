@@ -24,7 +24,11 @@ module Simpler
         return unless route_params.count == request_params.count
 
         route_params.each_with_index do |param, index|
-          set_param(param, request_params[index]) if param.start_with?(':')
+          if param.start_with?(':')
+            set_param(param, request_params[index])
+          else
+            return false unless param == request_params[index]
+          end
         end
       end
 
@@ -34,7 +38,7 @@ module Simpler
 
       def set_param(param, value)
         param = param.delete!(':').to_sym
-        @params[param] = value.to_i
+        @params[param] = value
       end
     end
   end

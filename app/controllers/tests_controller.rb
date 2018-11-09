@@ -12,6 +12,6 @@ class TestsController < Simpler::Controller
   end
 
   def show
-    render plain: params[:id]
+    render json: params
   end
 end

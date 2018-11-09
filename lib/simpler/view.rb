@@ -1,41 +1,26 @@
-require 'erb'
+require_relative 'renderer/html_renderer.rb'
+require_relative 'renderer/plain_renderer.rb'
+require_relative 'renderer/json_renderer.rb'
 
 module Simpler
   class View
-
-    VIEW_BASE_PATH = 'app/views'.freeze
-
     def initialize(env)
-      @env = env
+      detect_renderer(env)
     end
 
     def render(binding)
-      template = File.read(template_path)
-
-      ERB.new(template).result(binding)
+      @renderer.render(binding)
     end
 
     private
 
-    def controller
-      @env['simpler.controller']
+    def detect_renderer(env)
+      @renderer = case env['simpler.template'].keys.first
+                  when :plain then PlainRenderer.new(env)
+                  when :json then JSONRenderer.new(env)
+                  else
+                    HtmlRenderer.new(env)
+                  end
     end
-
-    def action
-      @env['simpler.action']
-    end
-
-    def template
-      @env['simpler.template']
-    end
-
-    def template_path
-      path = template || [controller.name, action].join('/')
-      file = "#{path}.html.erb"
-      @env['simpler.template_path'] = file
-
-      Simpler.root.join(VIEW_BASE_PATH, file)
-    end
-
   end
 end
