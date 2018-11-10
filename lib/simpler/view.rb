@@ -4,6 +4,12 @@ require_relative 'renderer/json_renderer.rb'
 
 module Simpler
   class View
+    RENDERERS = {
+      plain: PlainRenderer,
+      json: JSONRenderer,
+      html: HtmlRenderer
+    }
+
     def initialize(env)
       detect_renderer(env)
     end
@@ -15,12 +21,10 @@ module Simpler
     private
 
     def detect_renderer(env)
-      @renderer = case env['simpler.template'].keys.first
-                  when :plain then PlainRenderer.new(env)
-                  when :json then JSONRenderer.new(env)
-                  else
-                    HtmlRenderer.new(env)
-                  end
+      mime_type = env['simpler.template']
+      key = mime_type.nil? ? :html : mime_type.keys.first
+
+      @renderer = RENDERERS[key].new(env)
     end
   end
 end

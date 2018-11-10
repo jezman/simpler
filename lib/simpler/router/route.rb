@@ -8,7 +8,6 @@ module Simpler
         @path = path
         @controller = controller
         @action = action
-        @params = {}
       end
 
       def match?(method, path)
@@ -37,6 +36,7 @@ module Simpler
       end
 
       def set_param(param, value)
+        @params = {}
         param = param.delete!(':').to_sym
         @params[param] = value
       end
