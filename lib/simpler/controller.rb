@@ -50,9 +50,9 @@ module Simpler
 
       case template.keys.first
       when :plain
-        set_headers_content_type('.text')
+        headers_content_type('.text')
       when :json
-        set_headers_content_type('.json')
+        headers_content_type('.json')
       end
     end
 
@@ -64,8 +64,8 @@ module Simpler
       @response.headers
     end
 
-    def set_headers_content_type(type)
-        headers['Content-Type'] = Rack::Mime::MIME_TYPES[type]
+    def headers_content_type(type)
+      headers['Content-Type'] = Rack::Mime.mime_type(type)
     end
   end
 end
